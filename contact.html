@@ -20,6 +20,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="services.html">Services</a></li>
           <li><a href="about.html">About Us</a></li>
+          <li><a href="request-staff.html">Request Staff</a></li>
           <li><a href="contact.html" class="active">Contact</a></li>
         </ul>
       </nav>
@@ -34,6 +35,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="services.html">Services</a></li>
         <li><a href="about.html">About Us</a></li>
+        <li><a href="request-staff.html">Request Staff</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
@@ -64,7 +66,11 @@
           <div>
             <div class="card" style="padding: 2rem;">
               <h3 style="margin-bottom: 1.25rem;">Send a message</h3>
-              <form class="contact-form" id="contactForm" action="#" method="post">
+              <form class="contact-form" id="contactForm" name="contact" action="/" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="contact">
+                <p hidden>
+                  <label>Do not fill this out: <input name="bot-field"></label>
+                </p>
                 <div class="form-group">
                   <label for="name">Your name *</label>
                   <input type="text" id="name" name="name" required placeholder="Full name">
@@ -92,7 +98,7 @@
                   <textarea id="message" name="message" required placeholder="Tell us a little about your situation and what you're looking for..."></textarea>
                 </div>
                 <button type="submit" class="btn btn--primary" style="width: 100%;">Send message</button>
-                <p id="formStatus" style="margin-top: 1rem; font-size: 0.9375rem; display: none;"></p>
+                <p id="formStatus" role="status" style="margin-top: 1rem; font-size: 0.9375rem; display: none;"></p>
               </form>
             </div>
           </div>
@@ -114,6 +120,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="about.html">About Us</a></li>
+            <li><a href="request-staff.html">Request Staff</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="cqc-compliance.html">CQC Compliance</a></li>
           </ul>
