@@ -36,6 +36,53 @@
     link.addEventListener('click', closeMenu);
   });
 
+  function showFormPopup(message, title) {
+    var existing = document.getElementById('formPopupOverlay');
+    if (existing) {
+      existing.remove();
+    }
+
+    var overlayEl = document.createElement('div');
+    overlayEl.id = 'formPopupOverlay';
+    overlayEl.className = 'form-popup-overlay';
+    overlayEl.setAttribute('role', 'dialog');
+    overlayEl.setAttribute('aria-modal', 'true');
+    overlayEl.setAttribute('aria-labelledby', 'formPopupTitle');
+    overlayEl.innerHTML =
+      '<div class="form-popup">' +
+        '<h3 id="formPopupTitle"></h3>' +
+        '<p id="formPopupMessage"></p>' +
+        '<button type="button" class="btn btn--primary" id="formPopupClose">OK</button>' +
+      '</div>';
+
+    document.body.appendChild(overlayEl);
+    overlayEl.querySelector('#formPopupTitle').textContent = title || 'Thank you';
+    overlayEl.querySelector('#formPopupMessage').textContent = message;
+
+    function closePopup() {
+      overlayEl.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function () {
+        if (overlayEl.parentNode) {
+          overlayEl.remove();
+        }
+      }, 200);
+    }
+
+    overlayEl.querySelector('#formPopupClose').addEventListener('click', closePopup);
+    overlayEl.addEventListener('click', function (e) {
+      if (e.target === overlayEl) {
+        closePopup();
+      }
+    });
+
+    requestAnimationFrame(function () {
+      overlayEl.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      overlayEl.querySelector('#formPopupClose').focus();
+    });
+  }
+
   function submitNetlifyForm(form, status, successMessage, onSuccess) {
     var submitButton = form.querySelector('button[type="submit"]');
     var originalButtonText = submitButton ? submitButton.textContent : '';
@@ -65,17 +112,22 @@
           throw new Error('Form submission failed');
         }
 
-        status.textContent = successMessage;
-        status.style.color = 'var(--color-primary)';
+        status.style.display = 'none';
+        status.textContent = '';
         form.reset();
+        showFormPopup(successMessage, 'Thank you');
 
         if (onSuccess) {
           onSuccess();
         }
       })
       .catch(function () {
-        status.textContent = 'Sorry, your message could not be sent. Please try again or contact us by phone or email.';
-        status.style.color = '#b42318';
+        status.style.display = 'none';
+        status.textContent = '';
+        showFormPopup(
+          'Sorry, your message could not be sent. Please try again or contact us by phone or email.',
+          'Something went wrong'
+        );
       })
       .finally(function () {
         if (submitButton) {
